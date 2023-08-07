@@ -8,6 +8,7 @@ const initialState = {
     user: null,
     openFilter: false,
     loading: false,
+    search: false,
 }
 
 const bookReducer = (state = initialState, action) => {
@@ -17,6 +18,7 @@ const bookReducer = (state = initialState, action) => {
                 ...state,
                 books: action.payload.data,
                 pagination: action.payload?.pagination,
+                isSearch: action.payload?.search || false
             }
             break;
         case "FILTERBOOK":

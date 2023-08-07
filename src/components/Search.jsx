@@ -20,6 +20,7 @@ const Search = (props) => {
                 payload: {
                     data: getBooks.data,
                     pagination: getBooks.pagination,
+                    isSearch:true
                 }
             })
             setSearchVal("")

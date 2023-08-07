@@ -14,12 +14,12 @@ const Header = ({ isHome }) => {
     return (
         <>
             <div className='app-header'>
-                <Link to={'/'} className='links'>
+                <a href={'/'} className='links'>
                     <div className='flex_row'>
                         <img src={logo} width={'50px'} alt="" />
                         <h4>BK</h4>
                     </div>
-                </Link>
+                </a>
                 <div className='user_info'>
                     <div>
                         <Link to={'/book/create'}>

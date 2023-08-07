@@ -15,7 +15,7 @@ const Home = () => {
     const [page, setPage] = useState(1)
     const homeRef = useRef()
     const [sortOrder, setSortOrder] = useState('ascending');
-    const { loading } = useSelector((state) => state.bookReducer)
+    const { loading, isSearch } = useSelector((state) => state.bookReducer)
 
     const handleSortToggle = () => {
         const newSortOrder = sortOrder === 'ascending' ? 'descending' : 'ascending';
@@ -98,7 +98,7 @@ const Home = () => {
                             <button onClick={handleSortToggle} className='submit_btn'>{sortOrder === 'ascending' ? "A-Z Sort" : "Z-A Sort"}</button>
                         </div>
                     </div> : <div className='title_header'>
-                        <h2 className='title_head'>Search results {books.length == "0" ? "no" : books.length} data found</h2>
+                        {books.length >= 1 && <h2 className='title_head'>Search results {books.length}</h2>}
                     </div>
                     }
                     {loading && <Loader />}
@@ -136,7 +136,7 @@ const Home = () => {
             <div className='center_div p-lg'>
                 <button className='submit_btn' onClick={handleLogout}>Logout</button>
             </div>
-        </div>
+        </div >
     )
 }
 
