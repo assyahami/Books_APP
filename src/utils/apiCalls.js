@@ -1,6 +1,6 @@
 import Axios from 'axios'
 
-export let BASE_URL = 'http://localhost:5000/api/v1';
+export let BASE_URL = 'https://books-app-server.onrender.com/api/v1';
 export let APP_URL = 'http://68.178.162.203:8080/application-test-v1.1';
 
 
