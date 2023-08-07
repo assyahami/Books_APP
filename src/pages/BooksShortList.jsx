@@ -29,7 +29,7 @@ const BooksShortList = () => {
                 <h2 className='title_head_md'>Shortlisted</h2>
                 <span className='border-line'></span>
             </div>
-            <div className='p-lg list-cards list-card-container'>
+            <div className=' list-cards list-card-container'>
                 {
                     data?.map((item, index) => {
                         return (

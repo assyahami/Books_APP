@@ -5,9 +5,10 @@ import * as Yup from 'yup'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { apiCalls } from '../utils/apiCalls'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { loginUser } from '../store/user/actions'
 import { useNavigate, useNavigation } from 'react-router'
+import Loader from '../components/Loader'
 
 const validationSignUp = Yup.object({
     email: Yup.string().matches(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -18,16 +19,18 @@ const validationSignUp = Yup.object({
 const Login = () => {
     let dispatch = useDispatch()
     let navigate = useNavigate()
+    const { loading } = useSelector((state) => state.bookReducer)
+
     const handleFormSubmit = async (values, resetForm) => {
         try {
             let payload = {
                 email: values.email,
                 password: values.password,
             }
+            dispatch({ type: "LOADINGON" })
             const findUser = await apiCalls("/users/login", payload, "post", toast)
             let getData = findUser.data
             window.localStorage.setItem('authToken', getData.token)
-            navigate('/')
             dispatch({
                 type: "LOGIN",
                 payload: {
@@ -36,6 +39,8 @@ const Login = () => {
                     authToken: getData.authToken,
                 }
             })
+            dispatch({ type: "LOADINGOFF" })
+            navigate('/')
             resetForm()
         } catch (error) {
 
@@ -47,7 +52,7 @@ const Login = () => {
             <div className='overlay'></div>
             <div>
                 <AuthCard heading={'Login'}>
-                    <Formik
+                    {loading ? <Loader /> : <Formik
                         initialValues={{
                             email: '',
                             password: '',
@@ -72,7 +77,7 @@ const Login = () => {
                                 </div>
                             </div>
                         )}
-                    </Formik>
+                    </Formik>}
                 </AuthCard>
             </div>
             <div className='book-quotes'>

@@ -7,6 +7,7 @@ const initialState = {
     pagination: {},
     user: null,
     openFilter: false,
+    loading: false,
 }
 
 const bookReducer = (state = initialState, action) => {
@@ -26,13 +27,13 @@ const bookReducer = (state = initialState, action) => {
                 return item.country?.toLowerCase().includes(countyfilterText)
             }
             );
-            let getBooks=getFilterBooks.filter(item => {
+            let getBooks = getFilterBooks.filter(item => {
                 return item.language?.toLowerCase().includes(langfilterText)
             }
             )
             console.log(getFilterBooks);
 
-            return { ...state, books:  getFilterBooks }
+            return { ...state, books: getFilterBooks }
             break;
         case "OPENFILTER":
             return {
@@ -44,6 +45,18 @@ const bookReducer = (state = initialState, action) => {
             return {
                 ...state,
                 openFilter: false,
+            }
+            break;
+        case "LOADINGON":
+            return {
+                ...state,
+                loading: true,
+            }
+            break;
+        case "LOADINGOFF":
+            return {
+                ...state,
+                loading: false,
             }
             break;
         default:

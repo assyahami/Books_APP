@@ -5,9 +5,10 @@ import * as Yup from 'yup'
 import axios from 'axios'
 import { apiCalls } from '../utils/apiCalls'
 import { toast } from 'react-toastify'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { signupUser } from '../store/user/actions'
 import { useNavigate } from 'react-router'
+import Loader from '../components/Loader'
 
 const validationSignUp = Yup.object({
     username: Yup.string().required('Username is required').min(3, 'Username must be at least 3 characters'),
@@ -19,7 +20,7 @@ const validationSignUp = Yup.object({
 const Signup = () => {
     let dispatch = useDispatch()
     let navigate = useNavigate()
-
+    const { loading } = useSelector((state) => state.bookReducer)
     const handleFormSubmit = async (values, resetForm) => {
         try {
             let payload = {
@@ -27,6 +28,7 @@ const Signup = () => {
                 email: values.email,
                 password: values.password,
             }
+            dispatch({ type: "LOADINGON" })
             const createUser = await apiCalls("/users/register", payload, "post", toast)
             let getData = createUser.data
             window.localStorage.setItem('authToken', getData.token)
@@ -38,19 +40,24 @@ const Signup = () => {
                     authToken: getData.authToken,
                 }
             })
+            dispatch({ type: "LOADINGOFF" })
             navigate("/")
             resetForm()
         } catch (error) {
             console.log(error);
+            dispatch({ type: "LOADINGOFF" })
+
         }
     }
+
 
     return (
         <div className='auth-container'>
             <div className='overlay'></div>
             <div>
+
                 <AuthCard heading={'Sign up'}>
-                    <Formik
+                    {loading ? <Loader /> : <Formik
                         initialValues={{
                             username: '',
                             email: '',
@@ -87,7 +94,7 @@ const Signup = () => {
                                 </div>
                             </div>
                         )}
-                    </Formik>
+                    </Formik>}
                 </AuthCard>
             </div>
             <div className='book-quotes'>

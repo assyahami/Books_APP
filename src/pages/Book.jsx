@@ -11,13 +11,14 @@ import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactModal from 'react-modal'
 import { customStyles } from '../components/FilterOptions'
+import Loader from '../components/Loader'
 
-
+let mobileView = window.innerWidth <= 480
 let styles = {
     ...customStyles, content: {
-        width: window.innerWidth <= 480 ? "100%" : "50%",
-        left: window.innerWidth <= 480  ? "0":'25%',
-        right: '25%',
+        left: mobileView ? "0%" : '25%',
+        right: mobileView ? "0%" : '25%',
+        width: mobileView ? "100%" : "50vw",
 
     }
 }
@@ -26,9 +27,11 @@ const CreateBook = () => {
     const dispatch = useDispatch()
     const token = localStorage.getItem("authToken")
     const [open, setOpen] = useState(false)
+    const { loading } = useSelector((state) => state.bookReducer)
 
     const handleGETMybooks = async () => {
         try {
+            dispatch({ type: "LOADINGON" })
             const getMybooks = await axios.get(BASE_URL + "/users/profile", {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -39,16 +42,21 @@ const CreateBook = () => {
                 payload: getMybooks.data.data.mybooks,
             })
             setData(getMybooks.data.data.mybooks)
+            dispatch({ type: "LOADINGOFF" })
         } catch (error) {
             console.log(error);
+            dispatch({ type: "LOADINGOFF" })
         }
     }
 
     const handleRemoveBooks = async (indx, id) => {
 
         try {
+            dispatch({ type: "LOADINGON" })
             setData((prev) => prev.filter((item, index) => index !== indx))
             await apiCalls("/users/delete_written_book/" + id, {}, 'put', toast, token)
+            dispatch({ type: "LOADINGOFF" })
+
         } catch (error) {
             console.log(error);
         }
@@ -62,6 +70,7 @@ const CreateBook = () => {
 
     const handleFormSubmit = async (values) => {
         try {
+            dispatch({ type: "LOADINGON" })
             const createBook = await axios.post(`${APP_URL}/books`, {
                 ...values
             }).then(async (res) => {
@@ -70,6 +79,7 @@ const CreateBook = () => {
                 handleGETMybooks()
                 handleCloseCreateDialog()
             })
+            dispatch({ type: "LOADINGOFF" })
         } catch (error) {
             console.log(error);
         }
@@ -81,16 +91,6 @@ const CreateBook = () => {
         <div className=''>
             <Header />
 
-            <div>
-                <ReactModal
-                    isOpen={open}
-                    onRequestClose={handleCloseCreateDialog}
-                    style={styles}
-                >
-                    <h4 className='txt-center'>Create a Book</h4>
-                    <CreateBookForm handleSubmit={handleFormSubmit} />
-                </ReactModal>
-            </div>
 
             <div className='mybooks-header'>
                 <div className='title_header p-md '>
@@ -102,11 +102,22 @@ const CreateBook = () => {
                 </div>
             </div>
             <div className='center_div' style={{ marginTop: 25 }}>
-                {data.length <= 0 && <div className='center_div'>
+                {data.length <= 0 && !loading && <div className='center_div'>
                     <h2>Your not written any boys</h2>
                 </div>}
             </div>
-            <div className='p-lg list-cards list-card-container'>
+            {loading ? <Loader /> : <div>
+                <ReactModal
+                    isOpen={open}
+                    onRequestClose={handleCloseCreateDialog}
+                    style={styles}
+                >
+                    <h4 className='txt-center'>Create a Book</h4>
+                    <CreateBookForm handleSubmit={handleFormSubmit} />
+                </ReactModal>
+            </div>}
+
+            <div className='list-cards list-card-container'>
                 {
                     data?.map((item, index) => {
                         return (
