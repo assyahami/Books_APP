@@ -1,0 +1,85 @@
+.center_div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.flex_row{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.w_50{
+  width: 50%;
+}
+.ml-auto{
+margin-right: auto;
+
+}
+.mr-auto{
+margin-left: auto;
+}
+.w_100{
+  width: 100%;
+}
+.p-md{
+  padding: 0.5rem;
+}
+.p-lg{
+  padding: 2rem;
+}
+.txt-center{
+  text-align: center;
+}
+.flex_col{
+  display: flex;
+  flex-direction: column;
+}
+.input_field{
+  box-shadow: inset 0px 0px 3px  rgba(0,0,0,0.75);
+  border: 2px  solid #fff;
+  padding: 8px;
+}
+.font_md{
+  font-size: 10px;
+}
+.title_head{
+  letter-spacing: 2px;
+  font-size: 2rem;
+}
+.title_head_md{
+  letter-spacing: 2px;
+  font-size: 1.5rem;
+}
+.border-line{
+  width: 5rem;
+  height: 0.2rem;
+  margin:0 0.5rem;
+  position: absolute;
+  background-color: #333;
+}
+.submit_btn{
+  background-color: #fff;
+  color: #333;
+  border-radius: 2rem;
+  padding: 0.5rem;
+}
+.P_0{
+  padding: 0;
+}
+.border_zero{
+border: none;
+}
+.outline_btn{
+  background-color: #fff;
+  color: #333;
+  border-radius: 2rem;
+  border: 0px;
+  padding: 0.5rem;
+  border: 1px solid #fff !;
+}
+.submit_btn:hover,.outline_btn:hover{
+  background-color: black;
+  color: #fff;
+  transition: 0.2s all linear;
+  cursor: pointer;
+}
