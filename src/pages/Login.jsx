@@ -43,7 +43,8 @@ const Login = () => {
             navigate('/')
             resetForm()
         } catch (error) {
-
+            dispatch({ type: "LOADINGOFF" })
+            console.log(error);
         }
     }
 

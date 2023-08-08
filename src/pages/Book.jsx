@@ -58,6 +58,7 @@ const CreateBook = () => {
             dispatch({ type: "LOADINGOFF" })
 
         } catch (error) {
+            dispatch({ type: "LOADINGOFF" })
             console.log(error);
         }
 
@@ -81,6 +82,7 @@ const CreateBook = () => {
             })
             dispatch({ type: "LOADINGOFF" })
         } catch (error) {
+            dispatch({ type: "LOADINGOFF" })
             console.log(error);
         }
     }
